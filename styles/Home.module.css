@@ -12,6 +12,16 @@
   align-items: center;
 }
 
+.searchBar {
+  width: 400px;
+  height: 48px;
+}
+
+.searchButton {
+  width: 88px;
+  height: 40px;
+}
+
 .footer {
   display: flex;
   flex: 1;
