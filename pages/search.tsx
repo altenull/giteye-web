@@ -1,9 +1,9 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { SearchUser } from "../models/user.model";
-import styles from "../styles/Home.module.css";
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { SearchUser } from '../models/user.model';
+import styles from '../styles/Home.module.css';
 
 const Search: NextPage = ({ searchUsers }: any) => {
   const router = useRouter();
@@ -22,7 +22,8 @@ const Search: NextPage = ({ searchUsers }: any) => {
         {searchUsers.map(({ id, login, avatar_url }) => (
           <div key={id}>
             <Image src={avatar_url} alt={login} width={80} height={80} />
-            <div>{login}</div>
+            <div>id: {id}</div>
+            <div>login: {login}</div>
           </div>
         ))}
       </div>
@@ -33,9 +34,7 @@ const Search: NextPage = ({ searchUsers }: any) => {
 export async function getServerSideProps({ query }: any) {
   const q = query.q;
 
-  const searchUsers: SearchUser[] = await fetch(
-    `http://localhost:8080/search/users/${q}`
-  )
+  const searchUsers: SearchUser[] = await fetch(`http://localhost:8080/search/users/${q}`)
     .then((res) => res.json())
     .then((data: SearchUser[]) => data);
 

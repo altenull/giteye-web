@@ -1,13 +1,13 @@
-import { SearchIcon } from "@chakra-ui/icons";
-import { FormControl, Heading, IconButton, Input } from "@chakra-ui/react";
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import styles from "../styles/Home.module.css";
+import { SearchIcon } from '@chakra-ui/icons';
+import { FormControl, Heading, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
-  const [queryValue, setQueryValue] = useState<string>("");
+  const [queryValue, setQueryValue] = useState<string>('');
   const router = useRouter();
 
   const searchUsers = () => {
@@ -23,24 +23,24 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <Heading style={{ marginBottom: "16px" }}>Giteye</Heading>
-        <FormControl style={{ display: "flex" }}>
-          <Input
-            autoFocus
-            value={queryValue}
-            placeholder="Search github users.."
-            onChange={(e) => setQueryValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                searchUsers();
-              }
-            }}
-          />
-          <IconButton
-            aria-label="Search github users"
-            icon={<SearchIcon />}
-            onClick={() => searchUsers()}
-          />
+        <Heading style={{ marginBottom: '16px' }}>Giteye</Heading>
+        <FormControl style={{ display: 'flex' }}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon />
+            </InputLeftElement>
+            <Input
+              autoFocus
+              value={queryValue}
+              placeholder="Search github users.."
+              onChange={(e) => setQueryValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  searchUsers();
+                }
+              }}
+            />
+          </InputGroup>
         </FormControl>
       </main>
 
