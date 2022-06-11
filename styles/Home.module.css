@@ -4,22 +4,10 @@
 
 .main {
   min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.searchBar {
-  width: 400px;
-  height: 48px;
-}
-
-.searchButton {
-  width: 88px;
-  height: 40px;
 }
 
 .footer {

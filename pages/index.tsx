@@ -1,3 +1,5 @@
+import { SearchIcon } from "@chakra-ui/icons";
+import { FormControl, Heading, IconButton, Input } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -21,25 +23,25 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <input
-          className={styles.searchBar}
-          value={queryValue}
-          autoFocus
-          onChange={(e) => setQueryValue(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              searchUsers();
-            }
-          }}
-        />
-        <button
-          className={styles.searchButton}
-          onClick={() => {
-            searchUsers();
-          }}
-        >
-          SEARCH!
-        </button>
+        <Heading style={{ marginBottom: "16px" }}>Giteye</Heading>
+        <FormControl style={{ display: "flex" }}>
+          <Input
+            autoFocus
+            value={queryValue}
+            placeholder="Search github users.."
+            onChange={(e) => setQueryValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                searchUsers();
+              }
+            }}
+          />
+          <IconButton
+            aria-label="Search github users"
+            icon={<SearchIcon />}
+            onClick={() => searchUsers()}
+          />
+        </FormControl>
       </main>
 
       {/* <footer className={styles.footer}>
