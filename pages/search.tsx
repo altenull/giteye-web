@@ -1,13 +1,17 @@
-import type { NextPage } from 'next';
+import { Heading } from '@chakra-ui/react';
+import type { GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { SearchUser } from './api/models/user.model';
-import styles from '../styles/Home.module.css';
-import AppHeader from '../foundation/components/AppHeader';
+import Layout from '../foundation/components/Layout';
 import GithubUsersSearchBar from '../search/components/GithubUsersSearchBar';
+import { SearchUser } from './api/models/user.model';
 
-const Search: NextPage = ({ searchUsers }: any) => {
+interface Props {
+  searchUsers: SearchUser[];
+}
+
+const Search: NextPage<Props> = ({ searchUsers }) => {
   const router = useRouter();
   const { q } = router.query;
 
@@ -19,11 +23,13 @@ const Search: NextPage = ({ searchUsers }: any) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <AppHeader />
-
-      <main className={styles.main}>
+      <Layout>
         <GithubUsersSearchBar initalSearchValue={q as string} />
-        <h1>Search: {q}</h1>
+
+        <Heading as="h4" size="sm">
+          {searchUsers.length} results
+        </Heading>
+
         <div>
           {searchUsers.map(({ id, login, avatar_url }) => (
             <div key={id}>
@@ -33,13 +39,13 @@ const Search: NextPage = ({ searchUsers }: any) => {
             </div>
           ))}
         </div>
-      </main>
+      </Layout>
     </>
   );
 };
 
-export async function getServerSideProps({ query }: any) {
-  const q = query.q;
+export async function getServerSideProps({ query }: GetServerSidePropsContext) {
+  const { q } = query;
 
   const searchUsers: SearchUser[] = await fetch(`http://localhost:8080/search/users/${q}`)
     .then((res) => res.json())

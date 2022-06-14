@@ -1,7 +1,8 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { HStack, Input, InputGroup, InputLeftElement, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useGithubUsersSearchHistory } from '../hooks/useGithubUsersSearchHistory';
 
 interface Props {
   initalSearchValue?: string;
@@ -9,6 +10,8 @@ interface Props {
 
 const GithubUsersSearchBar: React.FC<Props> = ({ initalSearchValue }: Props) => {
   const [searchValue, setSearchValue] = useState<string>(initalSearchValue ?? '');
+
+  const { githubUserSearchHistories, searchGithubUser, removeGithubUserSearchHistory } = useGithubUsersSearchHistory();
   const router = useRouter();
 
   const handleSearchValueChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,23 +20,44 @@ const GithubUsersSearchBar: React.FC<Props> = ({ initalSearchValue }: Props) => 
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      searchGithubUser(searchValue);
       router.push(`/search?q=${searchValue}`);
     }
   };
 
+  const handleSearchHistoryTagClick = (githubUserSearchHistory: string) => {
+    router.push(`/search?q=${githubUserSearchHistory}`);
+  };
+
   return (
-    <InputGroup>
-      <InputLeftElement pointerEvents="none">
-        <SearchIcon />
-      </InputLeftElement>
-      <Input
-        autoFocus
-        value={searchValue}
-        placeholder="Search github users.."
-        onChange={handleSearchValueChange}
-        onKeyDown={handleKeyDown}
-      />
-    </InputGroup>
+    <>
+      <InputGroup style={{ marginBottom: '12px' }}>
+        <InputLeftElement pointerEvents="none">
+          <SearchIcon />
+        </InputLeftElement>
+        <Input
+          autoFocus
+          value={searchValue}
+          placeholder="Search github users.."
+          onChange={handleSearchValueChange}
+          onKeyDown={handleKeyDown}
+        />
+      </InputGroup>
+
+      <HStack spacing={3}>
+        {githubUserSearchHistories.map((githubUserSearchHistory: string, index: number) => (
+          <Tag key={`${index}_${githubUserSearchHistory}`} size="lg" borderRadius="full" variant="subtle">
+            <TagLabel
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleSearchHistoryTagClick(githubUserSearchHistory)}
+            >
+              {githubUserSearchHistory}
+            </TagLabel>
+            <TagCloseButton onClick={() => removeGithubUserSearchHistory(index)} />
+          </Tag>
+        ))}
+      </HStack>
+    </>
   );
 };
 

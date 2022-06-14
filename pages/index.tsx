@@ -1,10 +1,18 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import AppHeader from '../foundation/components/AppHeader';
+import { useEffect } from 'react';
+import Layout from '../foundation/components/Layout';
 import GithubUsersSearchBar from '../search/components/GithubUsersSearchBar';
-import styles from '../styles/Home.module.css';
+import { useGithubUsersSearchHistory } from '../search/hooks/useGithubUsersSearchHistory';
 
 const Home: NextPage = () => {
+  const { initGithubUsersSearchHistory } = useGithubUsersSearchHistory();
+
+  useEffect(() => {
+    // TODO: Run initGithubUsersSearchHistory only once when starting app.
+    initGithubUsersSearchHistory();
+  }, []);
+
   return (
     <>
       <Head>
@@ -13,11 +21,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <AppHeader />
-
-      <main className={styles.main}>
+      <Layout>
         <GithubUsersSearchBar />
-      </main>
+      </Layout>
 
       {/* <footer className={styles.footer}>
         <a
