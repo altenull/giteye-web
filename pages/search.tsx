@@ -1,10 +1,13 @@
-import { Heading } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import Layout from '../foundation/components/Layout';
 import GithubUsersSearchBar from '../search/components/GithubUsersSearchBar';
+import SimpleUserCard from '../search/components/SimpleUserCard';
+import { useGithubUsersSearchHistory } from '../search/hooks/useGithubUsersSearchHistory';
+import { pluralize } from '../utils/pluralize.util';
 import { SearchUser } from './api/models/user.model';
 
 interface Props {
@@ -12,8 +15,14 @@ interface Props {
 }
 
 const Search: NextPage<Props> = ({ searchUsers }) => {
+  const { initGithubUsersSearchHistory } = useGithubUsersSearchHistory();
   const router = useRouter();
   const { q } = router.query;
+
+  useEffect(() => {
+    // TODO: Run initGithubUsersSearchHistory only once when starting app.
+    initGithubUsersSearchHistory();
+  }, []);
 
   return (
     <>
@@ -26,19 +35,15 @@ const Search: NextPage<Props> = ({ searchUsers }) => {
       <Layout>
         <GithubUsersSearchBar initalSearchValue={q as string} />
 
-        <Heading as="h4" size="sm">
-          {searchUsers.length} results
+        <Heading style={{ margin: '16px auto', textAlign: 'right' }} as="h4" size="sm" maxW="xl">
+          {searchUsers.length} {pluralize('result', searchUsers.length)}
         </Heading>
 
-        <div>
-          {searchUsers.map(({ id, login, avatar_url }) => (
-            <div key={id}>
-              <Image src={avatar_url} alt={login} width={80} height={80} />
-              <div>id: {id}</div>
-              <div>login: {login}</div>
-            </div>
+        <Box style={{ margin: '0 auto' }} maxW="xl">
+          {searchUsers.map((searchUser) => (
+            <SimpleUserCard key={searchUser.id} searchUser={searchUser} />
           ))}
-        </div>
+        </Box>
       </Layout>
     </>
   );
@@ -55,3 +60,6 @@ export async function getServerSideProps({ query }: GetServerSidePropsContext) {
 }
 
 export default Search;
+function initGithubUsersSearchHistory() {
+  throw new Error('Function not implemented.');
+}

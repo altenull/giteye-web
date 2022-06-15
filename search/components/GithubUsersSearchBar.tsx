@@ -1,5 +1,5 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { HStack, Input, InputGroup, InputLeftElement, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
+import { Box, HStack, Input, InputGroup, InputLeftElement, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { useGithubUsersSearchHistory } from '../hooks/useGithubUsersSearchHistory';
@@ -30,7 +30,7 @@ const GithubUsersSearchBar: React.FC<Props> = ({ initalSearchValue }: Props) => 
   };
 
   return (
-    <>
+    <Box style={{ margin: '0 auto' }} maxW="xl">
       <InputGroup style={{ marginBottom: '12px' }}>
         <InputLeftElement pointerEvents="none">
           <SearchIcon />
@@ -57,7 +57,7 @@ const GithubUsersSearchBar: React.FC<Props> = ({ initalSearchValue }: Props) => 
           </Tag>
         ))}
       </HStack>
-    </>
+    </Box>
   );
 };
 
