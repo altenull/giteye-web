@@ -4,8 +4,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Layout from '../foundation/components/Layout';
+import FancyUserCard from '../search/components/FancyUserCard';
 import GithubUsersSearchBar from '../search/components/GithubUsersSearchBar';
-import SimpleUserCard from '../search/components/SimpleUserCard';
 import { useGithubUsersSearchHistory } from '../search/hooks/useGithubUsersSearchHistory';
 import { pluralize } from '../utils/pluralize.util';
 import { SearchUser } from './api/models/user.model';
@@ -41,7 +41,7 @@ const Search: NextPage<Props> = ({ searchUsers }) => {
 
         <Box style={{ margin: '0 auto' }} maxW="xl">
           {searchUsers.map((searchUser) => (
-            <SimpleUserCard key={searchUser.id} searchUser={searchUser} />
+            <FancyUserCard key={searchUser.id} searchUser={searchUser} />
           ))}
         </Box>
       </Layout>
@@ -52,7 +52,7 @@ const Search: NextPage<Props> = ({ searchUsers }) => {
 export async function getServerSideProps({ query }: GetServerSidePropsContext) {
   const { q } = query;
 
-  const searchUsers: SearchUser[] = await fetch(`http://localhost:8080/search/users/${q}`)
+  const searchUsers: SearchUser[] = await fetch(`${process.env.API_ENDPOINT}/search/users/${q}`)
     .then((res) => res.json())
     .then((data: SearchUser[]) => data);
 
