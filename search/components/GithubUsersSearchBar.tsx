@@ -1,7 +1,7 @@
 import { SearchIcon } from '@chakra-ui/icons';
 import { Box, HStack, Input, InputGroup, InputLeftElement, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useGithubUsersSearchHistory } from '../hooks/useGithubUsersSearchHistory';
 
 interface Props {
@@ -9,10 +9,14 @@ interface Props {
 }
 
 const GithubUsersSearchBar: React.FC<Props> = ({ initalSearchValue }: Props) => {
-  const [searchValue, setSearchValue] = useState<string>(initalSearchValue ?? '');
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const { githubUserSearchHistories, searchGithubUser, removeGithubUserSearchHistory } = useGithubUsersSearchHistory();
   const router = useRouter();
+
+  useEffect(() => {
+    setSearchValue(initalSearchValue ?? '');
+  }, [initalSearchValue]);
 
   const handleSearchValueChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
