@@ -1,8 +1,8 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Button, Heading } from '@chakra-ui/react';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../foundation/components/Layout';
 import FancyUserCard from '../search/components/FancyUserCard';
 import GithubUsersSearchBar from '../search/components/GithubUsersSearchBar';
@@ -14,7 +14,10 @@ interface Props {
   searchUsers: SearchUser[];
 }
 
+const SEARCH_RESULT_CHUNK = 4;
+
 const Search: NextPage<Props> = ({ searchUsers }) => {
+  const [currentSearchResultChunkStep, setCurrentSearchResultChunkStep] = useState<number>(0);
   const { initGithubUsersSearchHistory } = useGithubUsersSearchHistory();
   const router = useRouter();
   const { q } = router.query;
@@ -23,6 +26,15 @@ const Search: NextPage<Props> = ({ searchUsers }) => {
     // TODO: Run initGithubUsersSearchHistory only once when starting app.
     initGithubUsersSearchHistory();
   }, []);
+
+  useEffect(() => {
+    // FIXME: setCurrentSearchResultChunkStep value is still existing even if search other things.
+    setCurrentSearchResultChunkStep(0);
+  }, [q]);
+
+  const currentSearchResultChunkTotal: number =
+    currentSearchResultChunkStep * SEARCH_RESULT_CHUNK + SEARCH_RESULT_CHUNK;
+  const canLoadMore: boolean = searchUsers.length > currentSearchResultChunkTotal;
 
   return (
     <>
@@ -40,9 +52,19 @@ const Search: NextPage<Props> = ({ searchUsers }) => {
         </Heading>
 
         <Box style={{ margin: '0 auto' }} maxW="xl">
-          {searchUsers.map((searchUser) => (
+          {searchUsers.slice(0, currentSearchResultChunkTotal).map((searchUser) => (
             <FancyUserCard key={searchUser.id} searchUser={searchUser} />
           ))}
+          {canLoadMore && (
+            <Button
+              style={{ width: '100%', marginTop: '12px' }}
+              colorScheme="blue"
+              size="md"
+              onClick={() => setCurrentSearchResultChunkStep((prev) => prev + 1)}
+            >
+              Load More
+            </Button>
+          )}
         </Box>
       </Layout>
     </>
