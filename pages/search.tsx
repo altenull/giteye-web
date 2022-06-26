@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Layout from '../foundation/components/Layout';
-import FancyUserCard from '../search/components/FancyUserCard';
+import UserCard from '../search/components/UserCard';
 import GithubUsersSearchBar from '../search/components/GithubUsersSearchBar';
 import { useGithubUsersSearchHistory } from '../search/hooks/useGithubUsersSearchHistory';
 import { pluralize } from '../utils/pluralize.util';
@@ -32,9 +32,8 @@ const Search: NextPage<Props> = ({ searchUsers }) => {
     setCurrentSearchResultChunkStep(0);
   }, [q]);
 
-  const currentSearchResultChunkTotal: number =
-    currentSearchResultChunkStep * SEARCH_RESULT_CHUNK + SEARCH_RESULT_CHUNK;
-  const canLoadMore: boolean = searchUsers.length > currentSearchResultChunkTotal;
+  const searchResultChunkMax: number = currentSearchResultChunkStep * SEARCH_RESULT_CHUNK + SEARCH_RESULT_CHUNK;
+  const canLoadMore: boolean = searchUsers.length > searchResultChunkMax;
 
   return (
     <>
@@ -52,8 +51,8 @@ const Search: NextPage<Props> = ({ searchUsers }) => {
         </Heading>
 
         <Box style={{ margin: '0 auto' }} maxW="xl">
-          {searchUsers.slice(0, currentSearchResultChunkTotal).map((searchUser) => (
-            <FancyUserCard key={searchUser.id} searchUser={searchUser} />
+          {searchUsers.slice(0, searchResultChunkMax).map((searchUser) => (
+            <UserCard key={searchUser.id} searchUser={searchUser} />
           ))}
           {canLoadMore && (
             <Button

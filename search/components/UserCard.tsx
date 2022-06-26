@@ -8,8 +8,7 @@ interface Props {
   searchUser: SearchUser;
 }
 
-// TODO: UI
-const FancyUserCard: React.FC<Props> = React.memo(({ searchUser }) => {
+const UserCard: React.FC<Props> = React.memo(({ searchUser }) => {
   const { user, isLoading, isError } = useGetUserAPI({ userName: searchUser.login });
 
   return (
@@ -33,4 +32,4 @@ const FancyUserCard: React.FC<Props> = React.memo(({ searchUser }) => {
   );
 });
 
-export default FancyUserCard;
+export default UserCard;
