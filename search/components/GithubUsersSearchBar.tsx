@@ -1,7 +1,7 @@
 import { SearchIcon } from '@chakra-ui/icons';
 import { Box, HStack, Input, InputGroup, InputLeftElement, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useCustomRouter } from '../../hooks/useCustomRouter';
 import { useGithubUsersSearchHistory } from '../hooks/useGithubUsersSearchHistory';
 
 interface Props {
@@ -12,7 +12,7 @@ const GithubUsersSearchBar: React.FC<Props> = ({ initalSearchValue }: Props) => 
   const [searchValue, setSearchValue] = useState<string>('');
 
   const { githubUserSearchHistories, searchGithubUser, removeGithubUserSearchHistory } = useGithubUsersSearchHistory();
-  const router = useRouter();
+  const { navigateToSearchUser } = useCustomRouter();
 
   useEffect(() => {
     setSearchValue(initalSearchValue ?? '');
@@ -25,12 +25,12 @@ const GithubUsersSearchBar: React.FC<Props> = ({ initalSearchValue }: Props) => 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       searchGithubUser(searchValue);
-      router.push(`/search-user?q=${searchValue}`);
+      navigateToSearchUser(searchValue);
     }
   };
 
   const handleSearchHistoryTagClick = (githubUserSearchHistory: string) => {
-    router.push(`/search-user?q=${githubUserSearchHistory}`);
+    navigateToSearchUser(githubUserSearchHistory);
   };
 
   return (
