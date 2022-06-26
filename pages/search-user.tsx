@@ -4,8 +4,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Layout from '../foundation/components/Layout';
-import UserCard from '../search/components/UserCard';
 import GithubUsersSearchBar from '../search/components/GithubUsersSearchBar';
+import UserCard from '../search/components/UserCard';
 import { useGithubUsersSearchHistory } from '../search/hooks/useGithubUsersSearchHistory';
 import { pluralize } from '../utils/pluralize.util';
 import { SearchUser } from './api/models/user.model';
@@ -16,7 +16,7 @@ interface Props {
 
 const SEARCH_RESULT_CHUNK = 4;
 
-const Search: NextPage<Props> = ({ searchUsers }) => {
+const SearchUser: NextPage<Props> = ({ searchUsers }) => {
   const [currentSearchResultChunkStep, setCurrentSearchResultChunkStep] = useState<number>(0);
   const { initGithubUsersSearchHistory } = useGithubUsersSearchHistory();
   const router = useRouter();
@@ -80,7 +80,4 @@ export async function getServerSideProps({ query }: GetServerSidePropsContext) {
   return { props: { searchUsers } };
 }
 
-export default Search;
-function initGithubUsersSearchHistory() {
-  throw new Error('Function not implemented.');
-}
+export default SearchUser;

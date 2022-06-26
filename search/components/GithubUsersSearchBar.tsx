@@ -25,12 +25,12 @@ const GithubUsersSearchBar: React.FC<Props> = ({ initalSearchValue }: Props) => 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       searchGithubUser(searchValue);
-      router.push(`/search?q=${searchValue}`);
+      router.push(`/search-user?q=${searchValue}`);
     }
   };
 
   const handleSearchHistoryTagClick = (githubUserSearchHistory: string) => {
-    router.push(`/search?q=${githubUserSearchHistory}`);
+    router.push(`/search-user?q=${githubUserSearchHistory}`);
   };
 
   return (
