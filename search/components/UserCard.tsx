@@ -1,6 +1,7 @@
 import { Box, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
+import { useCustomRouter } from '../../hooks/useCustomRouter';
 import { SearchUser } from '../../pages/api/models/user.model';
 import { useGetUserAPI } from '../hooks/useGetUserAPI';
 
@@ -10,9 +11,18 @@ interface Props {
 
 const UserCard: React.FC<Props> = React.memo(({ searchUser }) => {
   const { user, isLoading, isError } = useGetUserAPI({ userName: searchUser.login });
+  const { navigateToRepositories } = useCustomRouter();
 
   return (
-    <Box display="flex" alignItems="center" maxW="xl" borderWidth="2px" borderRadius="lg">
+    <Box
+      cursor="pointer"
+      display="flex"
+      alignItems="center"
+      maxW="xl"
+      borderWidth="2px"
+      borderRadius="lg"
+      onClick={() => navigateToRepositories(searchUser.login)}
+    >
       <Image src={searchUser.avatar_url} alt={searchUser.login} width={48} height={48} />
       <Text style={{ marginLeft: '12px' }} fontSize="xl">
         {searchUser.login}
