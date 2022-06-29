@@ -1,4 +1,5 @@
 import { Box, Text } from '@chakra-ui/react';
+import styled from '@emotion/styled';
 import Image from 'next/image';
 import React from 'react';
 import { useCustomRouter } from '../../hooks/useCustomRouter';
@@ -15,15 +16,32 @@ const UserCard: React.FC<Props> = React.memo(({ searchUser }) => {
 
   return (
     <Box
+      position="relative"
       cursor="pointer"
       display="flex"
       alignItems="center"
       maxW="xl"
       borderWidth="2px"
       borderRadius="lg"
+      overflow="hidden"
       onClick={() => navigateToRepositories(searchUser.login)}
     >
-      <Image src={searchUser.avatar_url} alt={searchUser.login} width={48} height={48} />
+      <StyledBlurredAvatarBackground
+        style={{
+          backgroundImage: `url(${searchUser.avatar_url})`,
+        }}
+      />
+
+      <Image
+        style={{
+          borderRadius: '50%',
+        }}
+        src={searchUser.avatar_url}
+        alt={searchUser.login}
+        width={72}
+        height={72}
+      />
+
       <Text style={{ marginLeft: '12px' }} fontSize="xl">
         {searchUser.login}
       </Text>
@@ -41,5 +59,18 @@ const UserCard: React.FC<Props> = React.memo(({ searchUser }) => {
     </Box>
   );
 });
+
+const StyledBlurredAvatarBackground = styled.div`
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(80px);
+`;
 
 export default UserCard;
