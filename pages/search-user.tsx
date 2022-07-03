@@ -1,4 +1,4 @@
-import { Box, Button, Heading } from '@chakra-ui/react';
+import { Box, Button, Heading, Text } from '@chakra-ui/react';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -34,6 +34,7 @@ const SearchUser: NextPage<Props> = ({ searchUsers }) => {
 
   const searchResultChunkMax: number = currentSearchResultChunkStep * SEARCH_RESULT_CHUNK + SEARCH_RESULT_CHUNK;
   const canLoadMore: boolean = searchUsers.length > searchResultChunkMax;
+  const shouldShowLastItem: boolean = currentSearchResultChunkStep > 0 && !canLoadMore;
 
   return (
     <>
@@ -63,6 +64,11 @@ const SearchUser: NextPage<Props> = ({ searchUsers }) => {
             >
               Load More
             </Button>
+          )}
+          {shouldShowLastItem && (
+            <Text fontSize="md" textAlign="center">
+              This is last.
+            </Text>
           )}
         </Box>
       </Layout>
