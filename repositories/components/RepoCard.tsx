@@ -1,6 +1,8 @@
 import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
-import GiteyeCard from '../../giteye-ui/components/GiteyeCard';
+import GiteyeCard from '../../giteye-ui/card/GiteyeCard';
+import { GithubLanguageKind } from '../../giteye-ui/github-language-icon/enums/github-language-kind.enum';
+import { getGithubLanguageIcon } from '../../giteye-ui/github-language-icon/helpers/github-language-icon.helper';
 import { Repo } from '../../pages/api/models/repo.model';
 
 interface Props {
@@ -8,12 +10,25 @@ interface Props {
 }
 
 const RepoCard: React.FC<Props> = React.memo(({ repo }) => {
+  const hasGithubLanagueIcon = (language: string | undefined) => {
+    if (language === undefined) {
+      return false;
+    }
+
+    return Object.keys(GithubLanguageKind).some((githubLanguageKind) => githubLanguageKind === language);
+  };
+
   return (
     <GiteyeCard>
       <Text style={{ marginBottom: '12px' }} fontSize="xl">
         {repo.name}
       </Text>
 
+      {hasGithubLanagueIcon(repo?.language) ? (
+        getGithubLanguageIcon(repo.language as GithubLanguageKind, 40)
+      ) : (
+        <p>{repo?.language ?? '-'}</p>
+      )}
       <Box>
         <Text fontSize="md">description: {repo?.description ?? '-'}</Text>
         <Text fontSize="md">html_url: {repo?.html_url ?? '-'}</Text>
