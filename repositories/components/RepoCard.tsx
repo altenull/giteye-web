@@ -1,5 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
+import GiteyeCard from '../../giteye-ui/components/GiteyeCard';
 import { Repo } from '../../pages/api/models/repo.model';
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 
 const RepoCard: React.FC<Props> = React.memo(({ repo }) => {
   return (
-    <Box maxW="xl" borderWidth="2px" borderRadius="lg">
+    <GiteyeCard>
       <Text style={{ marginBottom: '12px' }} fontSize="xl">
         {repo.name}
       </Text>
@@ -28,7 +29,7 @@ const RepoCard: React.FC<Props> = React.memo(({ repo }) => {
         <Text fontSize="md">homepage: {repo?.homepage ?? '-'}</Text>
         <Text fontSize="md">language: {repo?.language ?? '-'}</Text>
       </Box>
-    </Box>
+    </GiteyeCard>
   );
 });
 

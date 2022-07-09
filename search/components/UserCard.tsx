@@ -3,6 +3,7 @@ import { Box, Img, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { differenceInDays, format } from 'date-fns';
 import React from 'react';
+import GiteyeCard from '../../giteye-ui/components/GiteyeCard';
 import { useCustomRouter } from '../../hooks/useCustomRouter';
 import { SearchUser } from '../../pages/api/models/user.model';
 import { useGetUserAPI } from '../hooks/useGetUserAPI';
@@ -41,7 +42,7 @@ const UserCard: React.FC<Props> = React.memo(({ searchUser }) => {
         />
       </StyledBlurredBackCoverWrapper>
 
-      <Box maxW="xl" padding="32px 40px" border="1px solid #000000" backgroundColor="white">
+      <GiteyeCard>
         <Box display="flex" justifyContent="space-between" alignItems="flex-start">
           <StyledUsername>
             <span>{searchUser.login}</span>
@@ -75,7 +76,7 @@ const UserCard: React.FC<Props> = React.memo(({ searchUser }) => {
 
           {typeof user?.created_at === 'string' && renderJoinedDate(user.created_at)}
         </Box>
-      </Box>
+      </GiteyeCard>
     </Box>
   );
 });
