@@ -3,7 +3,7 @@ import { Box, Img, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { differenceInDays, format } from 'date-fns';
 import React from 'react';
-import GiteyeCard from '../../giteye-ui/components/GiteyeCard';
+import GiteyeCard from '../../giteye-ui/card/GiteyeCard';
 import { useCustomRouter } from '../../hooks/useCustomRouter';
 import { SearchUser } from '../../pages/api/models/user.model';
 import { useGetUserAPI } from '../hooks/useGetUserAPI';
